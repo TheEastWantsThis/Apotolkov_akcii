@@ -103,6 +103,44 @@ window.addEventListener('scroll', () => {
   });
 });
 
+// Auto popup — after 30s or at 50% scroll depth, once per session
+(function () {
+  let shown = false;
+
+  function showAutoPopup() {
+    if (shown) return;
+    if (sessionStorage.getItem('autoPopupShown')) return;
+    shown = true;
+    document.getElementById('auto-popup').classList.add('show');
+  }
+
+  window.closeAutoPopup = function () {
+    document.getElementById('auto-popup').classList.remove('show');
+    sessionStorage.setItem('autoPopupShown', '1');
+  };
+
+  window.submitAutoPopup = function (e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.auto-popup-btn');
+    btn.textContent = '✓ Записаны!';
+    btn.style.background = 'var(--green)';
+    btn.disabled = true;
+    e.target.style.display = 'none';
+    document.getElementById('auto-popup-success').style.display = 'block';
+    sessionStorage.setItem('autoPopupShown', '1');
+    setTimeout(window.closeAutoPopup, 2500);
+  };
+
+  setTimeout(showAutoPopup, 30000);
+
+  window.addEventListener('scroll', function () {
+    const scrolled = window.scrollY + window.innerHeight;
+    if (scrolled >= document.body.scrollHeight * 0.5) {
+      showAutoPopup();
+    }
+  }, { passive: true });
+}());
+
 // Fade-in on scroll
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });

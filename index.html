@@ -713,6 +713,21 @@
   </div>
 </div>
 
+<!-- AUTO POPUP -->
+<div class="auto-popup" id="auto-popup">
+  <button class="auto-popup-close" onclick="closeAutoPopup()">×</button>
+  <div class="auto-popup-badge">🎁 Специальное предложение</div>
+  <h3>Запишитесь на <span>бесплатный замер</span></h3>
+  <p>Замерщик приедет сегодня и рассчитает стоимость. Скидка 20% до конца месяца!</p>
+  <form class="auto-popup-form" onsubmit="submitAutoPopup(event)">
+    <input type="text" placeholder="Ваше имя" required>
+    <input type="tel" placeholder="+7 (___) ___-__-__" required>
+    <button type="submit" class="auto-popup-btn">📐 Записаться бесплатно</button>
+  </form>
+  <div class="auto-popup-success" id="auto-popup-success">✓ Заявка принята! Перезвоним за 15 минут.</div>
+  <p class="auto-popup-note">Без обязательств • Бесплатно • За 15 минут</p>
+</div>
+
 <!-- FLOATING BUTTONS -->
 <div class="float-wrap">
   <a href="https://wa.me/74951234567" class="float-btn float-wa" target="_blank">
