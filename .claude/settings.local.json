@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\Prodject\\\\Claud new\\\\streaming-overlay\\\\src\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"C:\\\\Users\\\\Prodject\\\\Claud new\\\\streaming-overlay\\\\assets\")",
+      "PowerShell(Get-Process | Where-Object { $_.Name -match 'electron' } | Select-Object Name, Id, CPU | Format-Table -AutoSize)",
+      "Bash(node -e ' *)",
+      "Bash(npm start *)",
+      "Bash(ls \"C:\\\\Users\\\\Prodject\\\\Claud new\\\\.claude\" 2>/dev/null || mkdir -p \"C:\\\\Users\\\\Prodject\\\\Claud new\\\\.claude\")",
+      "Bash(ls \"C:\\\\Users\\\\Prodject\\\\Desktop\\\\bichmodel\")",
+      "Read(//c/Users/Prodject/Desktop/bichmodel/**)",
+      "Bash(start \"c:\\\\Users\\\\Prodject\\\\Claud new\\\\index.html\")"
+    ]
+  }
+}
