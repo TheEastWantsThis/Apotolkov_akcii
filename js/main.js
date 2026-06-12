@@ -146,3 +146,24 @@ const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// Type cards slideshow — auto-rotate every 15 seconds
+(function () {
+  const cards = document.querySelectorAll('.type-card');
+  const state = [];
+  cards.forEach((card, i) => {
+    state[i] = 0;
+  });
+  setInterval(function () {
+    cards.forEach(function (card, i) {
+      const slides = card.querySelectorAll('.type-slide');
+      const dots   = card.querySelectorAll('.type-dot');
+      if (slides.length <= 1) return;
+      slides[state[i]].classList.remove('active');
+      dots[state[i]].classList.remove('active');
+      state[i] = (state[i] + 1) % slides.length;
+      slides[state[i]].classList.add('active');
+      dots[state[i]].classList.add('active');
+    });
+  }, 15000);
+}());
