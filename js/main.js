@@ -1,169 +1,136 @@
-// Menu
-function toggleMenu() {
-  document.getElementById('nav-menu').classList.toggle('open');
-}
+// Mobile menu
+const burger = document.querySelector('.burger');
+const navMenu = document.getElementById('nav-menu');
+burger.addEventListener('click', () => {
+  const isOpen = navMenu.classList.toggle('open');
+  burger.setAttribute('aria-expanded', String(isOpen));
+});
+navMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+  navMenu.classList.remove('open');
+  burger.setAttribute('aria-expanded', 'false');
+}));
 
-// Modal
-function openModal() {
-  document.getElementById('modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+// Lead modal and privacy modal
+const leadModal = document.getElementById('modal');
+const privacyModal = document.getElementById('privacy-modal');
+function syncBodyLock() {
+  document.body.style.overflow = leadModal.classList.contains('open') || privacyModal.classList.contains('open') ? 'hidden' : '';
 }
+function openModal() { leadModal.classList.add('open'); syncBodyLock(); }
 function closeModal() {
-  document.getElementById('modal').classList.remove('open');
-  document.body.style.overflow = '';
-  // reset form
-  const f = document.getElementById('modal-form');
-  if (f) { f.reset(); f.style.display = ''; }
-  const s = document.getElementById('modal-success');
-  if (s) s.style.display = 'none';
-  const btn = document.getElementById('modal-submit');
-  if (btn) { btn.textContent = 'Записаться на замер'; btn.disabled = false; }
+  leadModal.classList.remove('open');
+  const form = document.getElementById('modal-form');
+  form.reset(); form.style.display = '';
+  document.getElementById('modal-success').style.display = 'none';
+  const error = form.querySelector('.form-error');
+  if (error) error.style.display = 'none';
+  syncBodyLock();
 }
-document.getElementById('modal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
+function openPrivacy() { privacyModal.classList.add('open'); syncBodyLock(); }
+function closePrivacy() { privacyModal.classList.remove('open'); syncBodyLock(); }
+document.querySelectorAll('.open-modal').forEach(el => el.addEventListener('click', openModal));
+document.querySelector('.modal-close').addEventListener('click', closeModal);
+document.querySelectorAll('.privacy-open').forEach(el => el.addEventListener('click', openPrivacy));
+document.querySelector('.privacy-close').addEventListener('click', closePrivacy);
+leadModal.addEventListener('click', e => { if (e.target === leadModal) closeModal(); });
+privacyModal.addEventListener('click', e => { if (e.target === privacyModal) closePrivacy(); });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (privacyModal.classList.contains('open')) closePrivacy(); else closeModal();
 });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-// Bind all open-modal triggers
-document.querySelectorAll('.open-modal').forEach(el => {
-  el.addEventListener('click', openModal);
+// Real form submission to the server-side mail handler
+document.querySelectorAll('.email-lead-form').forEach(form => {
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const button = form.querySelector('button[type="submit"]');
+    const originalText = button.textContent;
+    let errorBox = form.querySelector('.form-error');
+    if (!errorBox) {
+      errorBox = document.createElement('div');
+      errorBox.className = 'form-error';
+      errorBox.setAttribute('role', 'alert');
+      form.appendChild(errorBox);
+    }
+    errorBox.textContent = '';
+    errorBox.style.display = 'none';
+    if (form.id === 'lead-form') document.getElementById('success-msg').style.display = 'none';
+    button.textContent = 'Отправляем...';
+    button.disabled = true;
+    try {
+      const response = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      const isJson = (response.headers.get('content-type') || '').includes('application/json');
+      const result = isJson ? await response.json() : {};
+      if (!response.ok) throw new Error(result.message || 'Не удалось отправить заявку.');
+      form.reset();
+      if (form.id === 'modal-form') {
+        form.style.display = 'none';
+        document.getElementById('modal-success').style.display = 'block';
+      } else {
+        const success = document.getElementById('success-msg');
+        success.className = 'success-msg';
+        success.textContent = result.message || '✓ Заявка отправлена! Мы свяжемся с вами.';
+        success.style.display = 'block';
+      }
+    } catch (error) {
+      errorBox.textContent = `${error.message || 'Не удалось отправить заявку.'} Можно связаться с нами по телефону или WhatsApp.`;
+      errorBox.style.display = 'block';
+    } finally {
+      button.textContent = originalText;
+      button.disabled = false;
+    }
+  });
 });
-
-// Modal form submit
-function submitModal(e) {
-  e.preventDefault();
-  const btn = document.getElementById('modal-submit');
-  btn.textContent = 'Отправляем...';
-  btn.disabled = true;
-  setTimeout(() => {
-    document.getElementById('modal-form').style.display = 'none';
-    document.getElementById('modal-success').style.display = 'block';
-    setTimeout(closeModal, 2800);
-  }, 1200);
-}
-
-// Contact form submit
-function submitForm(e) {
-  e.preventDefault();
-  const btn = e.target.querySelector('.btn-submit');
-  btn.textContent = 'Отправляем...';
-  btn.disabled = true;
-  setTimeout(() => {
-    document.getElementById('success-msg').style.display = 'block';
-    btn.textContent = '✓ Отправлено!';
-    e.target.reset();
-  }, 1200);
-}
 
 // Specialists switcher
 let currentSpec = 0;
 function showSpec(index) {
-  document.querySelectorAll('.spec-card').forEach((c, i) => c.classList.toggle('active', i === index));
-  document.querySelectorAll('.spec-tab').forEach((t, i) => t.classList.toggle('active', i === index));
+  document.querySelectorAll('.spec-card').forEach((card, i) => card.classList.toggle('active', i === index));
+  document.querySelectorAll('.spec-tab').forEach((tab, i) => tab.classList.toggle('active', i === index));
   currentSpec = index;
 }
+document.querySelectorAll('[data-spec-index]').forEach(tab => tab.addEventListener('click', () => showSpec(Number(tab.dataset.specIndex))));
 setInterval(() => showSpec((currentSpec + 1) % 2), 10000);
 
-// FAQ accordion
-document.querySelectorAll('.faq-q').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const item = btn.closest('.faq-item');
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  });
-});
+// FAQ
+document.querySelectorAll('.faq-q').forEach(btn => btn.addEventListener('click', () => {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(openItem => openItem.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}));
 
-// Countdown to end of month
+// Countdown to the end of the current month
 function updateCountdown() {
   const now = new Date();
   const end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
   const diff = Math.max(0, end - now);
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  const pad = n => String(n).padStart(2, '0');
-  document.querySelectorAll('.cd-days').forEach(el => el.textContent = pad(d));
-  document.querySelectorAll('.cd-hours').forEach(el => el.textContent = pad(h));
-  document.querySelectorAll('.cd-mins').forEach(el => el.textContent = pad(m));
-  document.querySelectorAll('.cd-secs').forEach(el => el.textContent = pad(s));
+  const values = { days: Math.floor(diff / 86400000), hours: Math.floor((diff % 86400000) / 3600000), mins: Math.floor((diff % 3600000) / 60000), secs: Math.floor((diff % 60000) / 1000) };
+  Object.entries(values).forEach(([key, value]) => document.querySelectorAll(`.cd-${key}`).forEach(el => { el.textContent = String(value).padStart(2, '0'); }));
 }
-setInterval(updateCountdown, 1000);
-updateCountdown();
+setInterval(updateCountdown, 1000); updateCountdown();
 
-// Nav highlight on scroll
+// Current section in navigation
 const sections = document.querySelectorAll('section[id]');
 const navLinks = document.querySelectorAll('nav ul li a');
 window.addEventListener('scroll', () => {
   let current = '';
-  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
-  navLinks.forEach(a => {
-    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
-  });
-});
+  sections.forEach(section => { if (window.scrollY >= section.offsetTop - 100) current = section.id; });
+  navLinks.forEach(link => { link.style.color = link.getAttribute('href') === `#${current}` ? 'var(--accent)' : ''; });
+}, { passive: true });
 
-// Auto popup — after 30s or at 50% scroll depth, once per session
-(function () {
-  let shown = false;
-
-  function showAutoPopup() {
-    if (shown) return;
-    if (sessionStorage.getItem('autoPopupShown')) return;
-    shown = true;
-    document.getElementById('auto-popup').classList.add('show');
-  }
-
-  window.closeAutoPopup = function () {
-    document.getElementById('auto-popup').classList.remove('show');
-    sessionStorage.setItem('autoPopupShown', '1');
-  };
-
-  window.submitAutoPopup = function (e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('.auto-popup-btn');
-    btn.textContent = '✓ Записаны!';
-    btn.style.background = 'var(--green)';
-    btn.disabled = true;
-    e.target.style.display = 'none';
-    document.getElementById('auto-popup-success').style.display = 'block';
-    sessionStorage.setItem('autoPopupShown', '1');
-    setTimeout(window.closeAutoPopup, 2500);
-  };
-
-  setTimeout(showAutoPopup, 30000);
-
-  window.addEventListener('scroll', function () {
-    const scrolled = window.scrollY + window.innerHeight;
-    if (scrolled >= document.body.scrollHeight * 0.5) {
-      showAutoPopup();
-    }
-  }, { passive: true });
-}());
-
-// Fade-in on scroll
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-}, { threshold: 0.1 });
+// Scroll reveal
+const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); }), { threshold: 0.1 });
 document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-// Type cards slideshow — auto-rotate every 15 seconds
-(function () {
-  const cards = document.querySelectorAll('.type-card');
-  const state = [];
-  cards.forEach((card, i) => {
-    state[i] = 0;
-  });
-  setInterval(function () {
-    cards.forEach(function (card, i) {
-      const slides = card.querySelectorAll('.type-slide');
-      const dots   = card.querySelectorAll('.type-dot');
-      if (slides.length <= 1) return;
-      slides[state[i]].classList.remove('active');
-      dots[state[i]].classList.remove('active');
-      state[i] = (state[i] + 1) % slides.length;
-      slides[state[i]].classList.add('active');
-      dots[state[i]].classList.add('active');
-    });
-  }, 15000);
-}());
+// Type cards slideshow
+const typeCards = document.querySelectorAll('.type-card');
+const slideState = Array(typeCards.length).fill(0);
+setInterval(() => typeCards.forEach((card, i) => {
+  const slides = card.querySelectorAll('.type-slide');
+  const dots = card.querySelectorAll('.type-dot');
+  if (slides.length <= 1) return;
+  slides[slideState[i]].classList.remove('active'); dots[slideState[i]].classList.remove('active');
+  slideState[i] = (slideState[i] + 1) % slides.length;
+  slides[slideState[i]].classList.add('active'); dots[slideState[i]].classList.add('active');
+}), 15000);

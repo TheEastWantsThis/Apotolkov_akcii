@@ -1,0 +1,14 @@
+Options -Indexes
+ServerSignature Off
+LimitRequestBody 16384
+<IfModule mod_headers.c>
+Header always set X-Content-Type-Options "nosniff"
+Header always set X-Frame-Options "DENY"
+Header always set Referrer-Policy "strict-origin-when-cross-origin"
+Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-sYC3d+5k84dVUwK0SosIpx2H+ZEVMpk2hpnBQsxpJ7Q='; connect-src 'self'; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests"
+</IfModule>
+<FilesMatch "(^\.|\.env|composer\.(json|lock)$)">
+Require all denied
+</FilesMatch>
