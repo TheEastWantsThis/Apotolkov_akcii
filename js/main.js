@@ -66,6 +66,11 @@ document.querySelectorAll('.email-lead-form').forEach(form => {
       if (form.id === 'modal-form') {
         form.style.display = 'none';
         document.getElementById('modal-success').style.display = 'block';
+      } else if (form.id === 'auto-popup-form') {
+        form.style.display = 'none';
+        document.getElementById('auto-popup-success').style.display = 'block';
+        sessionStorage.setItem('autoPopupShown', '1');
+        setTimeout(closeAutoPopup, 2600);
       } else {
         const success = document.getElementById('success-msg');
         success.className = 'success-msg';
@@ -81,6 +86,24 @@ document.querySelectorAll('.email-lead-form').forEach(form => {
     }
   });
 });
+
+// Automatic measurement popup: after 30 seconds or at 50% scroll depth, once per session
+const autoPopup = document.getElementById('auto-popup');
+let autoPopupOpened = false;
+function showAutoPopup() {
+  if (autoPopupOpened || sessionStorage.getItem('autoPopupShown')) return;
+  autoPopupOpened = true;
+  autoPopup.classList.add('show');
+}
+function closeAutoPopup() {
+  autoPopup.classList.remove('show');
+  sessionStorage.setItem('autoPopupShown', '1');
+}
+document.querySelector('.auto-popup-close').addEventListener('click', closeAutoPopup);
+setTimeout(showAutoPopup, 30000);
+window.addEventListener('scroll', () => {
+  if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight * 0.5) showAutoPopup();
+}, { passive: true });
 
 // Specialists switcher
 let currentSpec = 0;
@@ -134,3 +157,5 @@ setInterval(() => typeCards.forEach((card, i) => {
   slideState[i] = (slideState[i] + 1) % slides.length;
   slides[slideState[i]].classList.add('active'); dots[slideState[i]].classList.add('active');
 }), 15000);
+
+document.getElementById('current-year').textContent = new Date().getFullYear();

@@ -15,7 +15,7 @@
   <meta property="og:description" content="Замер, расчёт и монтаж натяжных потолков. Реальные фотографии выполненных работ.">
   <meta property="og:url" content="https://apostolkov.ru/">
   <meta property="og:image" content="https://apostolkov.ru/assets/img/works/contour-light.jpg">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"АпотолковЪ","url":"https://apostolkov.ru/","telephone":"+7-495-123-45-67","email":"info@apostolkov.ru","areaServed":["Санкт-Петербург","Ленинградская область"],"priceRange":"от 350 ₽/м²","openingHours":"Mo-Su 08:00-22:00"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness","name":"АпотолковЪ","legalName":"ИП Тихонов Александр Владимирович","url":"https://apostolkov.ru/","telephone":"+7-993-959-08-06","email":"info@apostolkov.ru","taxID":"780443421382","areaServed":["Санкт-Петербург","Ленинградская область"],"priceRange":"от 350 ₽/м²","openingHours":"Mo-Su 08:00-22:00"}</script>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -25,7 +25,7 @@
   <div class="promo-ticker">
     <span>🔥 АКЦИЯ: <strong>скидка 20%</strong> до конца месяца</span>
     <span>📐 <strong>Бесплатный замер</strong> без обязательств</span>
-    <span>☎ <strong>+7 (495) 123-45-67</strong> · ежедневно 8:00–22:00</span>
+    <span>☎ <strong>+7 (993) 959-08-06</strong> · ежедневно 8:00–22:00</span>
   </div>
 </div>
 
@@ -42,7 +42,7 @@
     <li><a href="#reviews">Отзывы</a></li>
     <li><a href="#contact">Контакты</a></li>
   </ul>
-  <a href="tel:+74951234567" class="nav-phone">+7 (495) 123-45-67</a>
+  <a href="tel:+79939590806" class="nav-phone">+7 (993) 959-08-06</a>
   <button class="nav-cta open-modal">Замер бесплатно</button>
   <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
 </nav>
@@ -363,7 +363,7 @@
     </div>
     <div class="spec-card active">
       <div class="spec-photo">
-        <img src="assets/img/team/measurer.jpg" alt="Замерщик натяжных потолков выполняет замер лазерным дальномером" loading="lazy" width="1024" height="1536">
+        <img class="spec-img--measurer" src="assets/img/team/measurer.png" alt="Замерщик натяжных потолков выполняет замер лазерным дальномером" loading="lazy" width="1122" height="1402">
       </div>
       <div class="spec-bottom">
         <div>
@@ -375,7 +375,7 @@
     </div>
     <div class="spec-card">
       <div class="spec-photo">
-        <img src="assets/img/team/installer.jpg" alt="Мастер выполняет монтаж натяжного потолка" loading="lazy" width="1536" height="1024">
+        <img class="spec-img--installer" src="assets/img/team/installer.png" alt="Мастер натягивает потолок монтажным шпателем" loading="lazy" width="1448" height="1086">
       </div>
       <div class="spec-bottom">
         <div>
@@ -610,14 +610,14 @@
         <div class="contact-icon">📞</div>
         <div>
           <strong>Телефон</strong>
-          <span>+7 (495) 123-45-67</span>
+          <span>+7 (993) 959-08-06</span>
         </div>
       </div>
       <div class="contact-item">
         <div class="contact-icon">💬</div>
         <div>
           <strong>WhatsApp</strong>
-          <span>+7 (495) 123-45-67</span>
+          <span>+7 (993) 959-08-06</span>
         </div>
       </div>
       <div class="contact-item">
@@ -700,16 +700,17 @@
     <div class="footer-col">
       <h4>Контакты</h4>
       <ul>
-        <li><a href="tel:+74951234567">+7 (495) 123-45-67</a></li>
+        <li><a href="tel:+79939590806">+7 (993) 959-08-06</a></li>
         <li><a href="mailto:info@apostolkov.ru">info@apostolkov.ru</a></li>
-        <li><a href="#">Санкт-Петербург и ЛО, пн–вс 8–22</a></li>
+        <li>Санкт-Петербург и ЛО, пн–вс 8–22</li>
+        <li class="footer-legal">ИП Тихонов А. В.<br>ИНН 780443421382<br>ОГРНИП 326784700211702</li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>© 2025 АпотолковЪ. Все права защищены.</p>
+    <p>© <span id="current-year">2026</span> АпотолковЪ. Все права защищены.<br><span class="footer-address">195427, г. Санкт-Петербург, пр-т Светлановский, д. 75, кв. 42</span></p>
     <div class="footer-socials">
-      <a href="https://wa.me/74951234567" class="social-btn" title="WhatsApp" target="_blank" rel="noopener noreferrer">W</a>
+      <a href="https://wa.me/79939590806" class="social-btn" title="WhatsApp" target="_blank" rel="noopener noreferrer">W</a>
     </div>
   </div>
 </footer>
@@ -747,9 +748,26 @@
   </div>
 </div>
 
+<!-- AUTO POPUP -->
+<div class="auto-popup" id="auto-popup">
+  <button class="auto-popup-close" type="button" aria-label="Закрыть">×</button>
+  <div class="auto-popup-badge">🎁 Специальное предложение</div>
+  <h3>Запишитесь на <span>бесплатный замер</span></h3>
+  <p>Замерщик приедет в удобное время и рассчитает стоимость. Скидка 20% до конца месяца!</p>
+  <form class="auto-popup-form email-lead-form" id="auto-popup-form" action="send.php" method="post">
+    <input type="text" name="name" placeholder="Ваше имя" autocomplete="name" maxlength="60" required>
+    <input type="tel" name="phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" inputmode="tel" maxlength="24" required>
+    <input class="form-honeypot" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <label class="consent-check"><input type="checkbox" name="consent" value="yes" required><span>Согласен(на) на <button type="button" class="privacy-open">обработку данных</button>.</span></label>
+    <button type="submit" class="auto-popup-btn">📐 Записаться бесплатно</button>
+  </form>
+  <div class="auto-popup-success" id="auto-popup-success">✓ Заявка отправлена! Перезвоним за 15 минут.</div>
+  <p class="auto-popup-note">Без обязательств • Бесплатно • Ответим в рабочее время</p>
+</div>
+
 <!-- FLOATING BUTTONS -->
 <div class="float-wrap">
-  <a href="https://wa.me/74951234567" class="float-btn float-wa" target="_blank" rel="noopener noreferrer">
+  <a href="https://wa.me/79939590806" class="float-btn float-wa" target="_blank" rel="noopener noreferrer">
     <span>💬</span><span class="float-label">WhatsApp</span>
   </a>
   <button class="float-btn float-measure open-modal">
@@ -763,12 +781,12 @@
     <button class="modal-close privacy-close" type="button" aria-label="Закрыть">×</button>
     <h3 id="privacy-title">Согласие на обработку персональных данных</h3>
     <div class="privacy-content">
-      <p>Отправляя форму, вы даёте оператору сайта «АпотолковЪ» согласие на обработку имени и номера телефона.</p>
+      <p>Отправляя форму, вы даёте оператору сайта — ИП Тихонову Александру Владимировичу — согласие на обработку имени и номера телефона.</p>
       <p><strong>Цель:</strong> обратная связь, консультация, согласование замера и подготовка расчёта стоимости.</p>
       <p><strong>Действия с данными:</strong> сбор, запись, хранение, использование для связи, блокирование и удаление.</p>
       <p><strong>Срок:</strong> до достижения цели обращения, но не более одного года, если иной срок не требуется законом или договором.</p>
       <p>Согласие можно отозвать письмом на <a href="mailto:info@apostolkov.ru">info@apostolkov.ru</a>. Данные не публикуются и не используются для рекламной рассылки без отдельного согласия.</p>
-      <p class="privacy-warning"><strong>Перед публикацией:</strong> добавьте сюда ФИО ИП или название организации, ИНН и адрес оператора.</p>
+      <p class="privacy-warning"><strong>Оператор:</strong> ИП Тихонов Александр Владимирович, ИНН 780443421382, ОГРНИП 326784700211702. Адрес: 195427, Россия, г. Санкт-Петербург, пр-т Светлановский, д. 75, кв. 42.</p>
     </div>
   </div>
 </div>
