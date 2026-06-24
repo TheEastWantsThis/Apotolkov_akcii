@@ -12,7 +12,7 @@ if(($_POST['consent']??'')!=='yes')answer(422,'Подтвердите согла
 $name=trim((string)($_POST['name']??''));$phone=trim((string)($_POST['phone']??''));
 if($name===''||mb_strlen($name)>60)answer(422,'Проверьте имя.');
 if(!preg_match('/^[0-9+()\-\s]{7,24}$/u',$phone))answer(422,'Проверьте номер телефона.');
-$mailTo=getenv('MAIL_TO')?:'';
+$mailTo=getenv('MAIL_TO')?:'apotolkov-spb@yandex.com';
 if(!filter_var($mailTo,FILTER_VALIDATE_EMAIL))answer(503,'Отправка на Яндекс-почту пока не настроена.');
 $rateFile=sys_get_temp_dir().DIRECTORY_SEPARATOR.'apostolkov_'.hash('sha256',(string)($_SERVER['REMOTE_ADDR']??'unknown'));
 if(is_file($rateFile)&&time()-(int)filemtime($rateFile)<30)answer(429,'Повторите отправку через 30 секунд.');
